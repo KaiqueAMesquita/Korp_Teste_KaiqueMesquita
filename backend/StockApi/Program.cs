@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StockApi.Data;
-
+using StockApi.Services;
+using StockApi.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,6 +17,8 @@ builder.Services.AddDbContext<StockDbContext>(options =>
     )
 );
 
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,3 +1,4 @@
+using StockApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace StockApi.Data;
@@ -8,4 +9,7 @@ public class StockDbContext : DbContext
         : base(options)
     {
     }
+    public DbSet<Product> Product{get;set;}
+
+    
 }
