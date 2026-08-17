@@ -6,10 +6,10 @@ public interface IProductService
 {
     Task<List<ProductDto>> getAll();
 
-    Task<ProductDto?> getById(int id);
+    Task<ProductDto?> getById(Guid id);
 
     Task<ProductDto> create(CreateProductDto dto);
 
-    Task<ProductDto> update(int id,CreateProductDto dto);
+    Task<ProductDto> update(Guid id,CreateProductDto dto);
     
 }

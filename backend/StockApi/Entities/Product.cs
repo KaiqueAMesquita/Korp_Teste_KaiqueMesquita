@@ -5,7 +5,7 @@ namespace  StockApi.Entities;
 
 public class Product
 {
-    public long Id {get; set;}
+    public Guid Id {get; set;}
     public required string Code {get;set;}
 
     public required string Description {get;set;}
