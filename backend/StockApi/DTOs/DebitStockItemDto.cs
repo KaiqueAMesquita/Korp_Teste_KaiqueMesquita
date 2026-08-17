@@ -1,6 +1,6 @@
 namespace StockApi.DTOs;
 
-public class DebitStockDto
+public class DebitStockItemDto
 {
     public Guid ProductId {get; set;}
 
