@@ -17,11 +17,18 @@ public class InvoiceService : IInvoiceService
 
     public async Task<InvoiceDto> create(CreateInvoiceDto dto)
     {
+
+        if (dto.Items == null || dto.Items.Count == 0)
+            throw new Exception("A nota deve possuir pelo menos um produto.");
+
+        if (dto.Items.Any(item => item.Quantity <= 0))
+            throw new Exception("A quantidade deve ser maior que zero.");
+        /*
         var invoice = new Invoice
         {
-            Number = dto.Number,
-            Status = dto.Status,
-            CreatedAt = dto.CreatedAt
+            Number = await repository.GetNextNumber(),
+            Status = Enums.InvoiceStatus.Opened,
+            CreatedAt = DateTime.UtcNow,
         };
 
         foreach (var itemDto in dto.Items)
@@ -29,8 +36,8 @@ public class InvoiceService : IInvoiceService
             var item = new InvoiceItem
             {
                 ProductId = itemDto.ProductId,
-                ProductCode = itemDto.ProductCode,
-                ProductDescription = itemDto.ProductDescription,
+                ProductCode = //itemDto.ProductCode,
+                ProductDescription = //itemDto.ProductDescription,
                 Quantity = itemDto.Quantity,
                 InvoiceId = invoice.Id
             };
@@ -40,6 +47,9 @@ public class InvoiceService : IInvoiceService
         var createdInvoice = await repository.create(invoice);
 
         return MapToDto(createdInvoice);
+        */
+
+        return null;
     }
 
     public async Task<List<InvoiceDto>> getAll()
@@ -70,8 +80,9 @@ public class InvoiceService : IInvoiceService
             return null;
         }
 
-        invoice.Number = dto.Number;
+
         invoice.Status = dto.Status;
+
 
         await repository.saveChanges();
 

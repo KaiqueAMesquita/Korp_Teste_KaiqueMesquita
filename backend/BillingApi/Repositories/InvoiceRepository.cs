@@ -36,4 +36,12 @@ public class InvoiceRepository : IInvoiceRepository
     {
         await context.SaveChangesAsync();
     }
-}
+
+    public async Task<int> GetNextNumber()
+    {
+        var lastNumber = await context.Invoice
+            .MaxAsync(i => (int?)i.Number) ?? 0;
+
+        return lastNumber + 1;
+    }
+    }

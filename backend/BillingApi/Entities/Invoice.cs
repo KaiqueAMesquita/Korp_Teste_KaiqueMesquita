@@ -4,7 +4,7 @@ namespace BillingApi.Entities;
 
 public class Invoice
 {
-    public Guid Id {get; set;} = Guid.NewGuid();
+    public Guid Id {get; set;}
 
     public required long Number {get; set;}
 

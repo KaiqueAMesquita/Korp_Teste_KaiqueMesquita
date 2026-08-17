@@ -5,12 +5,6 @@ namespace BillingApi.DTOs;
 
 public class UpdateInvoiceDto
 {
-    [Required]
-    public long Number { get; set; }
-
-    public InvoiceStatus Status { get; set; } = InvoiceStatus.Open;
-
-
-
-
+    public InvoiceStatus Status { get; set; }
+    
 }

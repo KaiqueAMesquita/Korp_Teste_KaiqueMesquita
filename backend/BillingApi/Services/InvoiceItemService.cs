@@ -15,17 +15,23 @@ public class InvoiceItemService : IInvoiceItemService
 
     public async Task<InvoiceItemDto> create(CreateInvoiceItemDto dto)
     {
+        /*
         var invoiceItem = new InvoiceItem
         {
+            
             ProductId = dto.ProductId,
             ProductCode = dto.ProductCode,
             ProductDescription = dto.ProductDescription,
             Quantity = dto.Quantity
+            
         };
+
 
         var createdItem = await repository.create(invoiceItem);
 
         return MapToDto(createdItem);
+        */
+        return null;
     }
 
     public async Task<List<InvoiceItemDto>> getAll()
@@ -55,12 +61,12 @@ public class InvoiceItemService : IInvoiceItemService
         {
             return null;
         }
-
+/*
         item.ProductId = dto.ProductId;
         item.ProductCode = dto.ProductCode;
         item.ProductDescription = dto.ProductDescription;
         item.Quantity = dto.Quantity;
-
+*/
         await repository.saveChanges();
 
         return MapToDto(item);

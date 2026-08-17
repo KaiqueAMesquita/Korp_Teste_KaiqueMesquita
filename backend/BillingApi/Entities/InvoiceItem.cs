@@ -2,8 +2,8 @@ namespace BillingApi.Entities;
 
 public class InvoiceItem
 {
-    public Guid Id {get; set;} = Guid.NewGuid();
-    public required int ProductId {get; set;}
+    public Guid Id {get; set;}
+    public required Guid ProductId {get; set;}
 
     public required string ProductCode {get; set;}
 
