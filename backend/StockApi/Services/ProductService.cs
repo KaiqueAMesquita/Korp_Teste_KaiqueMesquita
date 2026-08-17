@@ -23,12 +23,17 @@ public class ProductService: IProductService
         };
         var createdProduct = await repository.create(product);
 
+        return MapToDto(createdProduct);
+    }
+
+    private ProductDto MapToDto(Product product)
+    {
         return new ProductDto
         {
-            Id = createdProduct.Id,
-            Code = createdProduct.Code,
-            Description = createdProduct.Description,
-            Balance = createdProduct.Balance
+            Id = product.Id,
+            Code = product.Code,
+            Description = product.Description,
+            Balance = product.Balance
         };
     }
 
@@ -36,13 +41,7 @@ public class ProductService: IProductService
     {
         var products = await repository.getAll();
 
-        return products.Select(product => new ProductDto
-        {
-            Id = product.Id,
-            Code = product.Code,
-            Description = product.Description,
-            Balance = product.Balance
-        }).ToList();
+         return products.Select(product => MapToDto(product)).ToList();
 
     }
 
@@ -56,13 +55,7 @@ public class ProductService: IProductService
 
         }
 
-        return new ProductDto
-        {
-            Id = product.Id,
-            Code = product.Code,
-            Description = product.Description,
-            Balance = product.Balance
-        };
+        return MapToDto(product);
     }
 
     public async Task<ProductDto> update(int id, CreateProductDto dto)
@@ -79,16 +72,7 @@ public class ProductService: IProductService
 
         await repository.saveChanges();
 
-        return new ProductDto
-        {
-            Id = product.Id,
-            Code = product.Code,
-            Description = product.Description,
-            Balance = product.Balance
-        };
-
-        
-
+        return MapToDto(product);
 
     }
 }
