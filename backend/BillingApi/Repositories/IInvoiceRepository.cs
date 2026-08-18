@@ -11,4 +11,6 @@ public interface IInvoiceRepository
     Task<Invoice?> create(Invoice invoice);
 
     Task saveChanges();
+
+    Task<int> GetNextNumber();
 }

@@ -1,6 +1,6 @@
 namespace BillingApi.Enums;
 public enum InvoiceStatus
 {
-    Open,
+    Opened,
     Closed
 }

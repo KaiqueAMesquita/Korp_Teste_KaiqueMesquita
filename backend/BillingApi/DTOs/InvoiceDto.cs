@@ -4,8 +4,7 @@ namespace BillingApi.DTOs;
 
 public class InvoiceDto
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-
+    public Guid Id { get; set; }
     public long Number { get; set; }
 
     public InvoiceStatus Status { get; set; }

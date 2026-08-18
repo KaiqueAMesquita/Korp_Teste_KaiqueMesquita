@@ -45,7 +45,7 @@ public class ProductService: IProductService
 
     }
 
-    public async Task<ProductDto?> getById(int id)
+    public async Task<ProductDto?> getById(Guid id)
     {
         var product = await repository.getById(id);
 
@@ -58,7 +58,7 @@ public class ProductService: IProductService
         return MapToDto(product);
     }
 
-    public async Task<ProductDto> update(int id, CreateProductDto dto)
+    public async Task<ProductDto> update(Guid id, CreateProductDto dto)
     {
         var product = await repository.getById(id);
 

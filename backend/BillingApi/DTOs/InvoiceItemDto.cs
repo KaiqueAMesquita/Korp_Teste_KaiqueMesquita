@@ -2,9 +2,9 @@ namespace BillingApi.DTOs;
 
 public class InvoiceItemDto
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
 
-    public int ProductId { get; set; }
+    public Guid ProductId { get; set; }
 
     public string ProductCode { get; set; } = string.Empty;
 

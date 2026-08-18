@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillingApi.Migrations
 {
     [DbContext(typeof(BillingDbContext))]
-    [Migration("20260817115329_InitialCreate")]
+    [Migration("20260818144309_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -62,8 +62,8 @@ namespace BillingApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");

@@ -25,7 +25,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ProductDto>> getById(int id)
+    public async Task<ActionResult<ProductDto>> getById(Guid id)
     {
         var product = await service.getById(id);
 
@@ -50,7 +50,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<ProductDto>> update(int id, CreateProductDto dto)
+    public async Task<ActionResult<ProductDto>> update(Guid id, CreateProductDto dto)
     {
         var product = await service.update(id,dto);
 

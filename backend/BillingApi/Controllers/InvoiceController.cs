@@ -60,4 +60,15 @@ public class InvoiceController : ControllerBase
 
         return Ok(invoice);
     }
+
+    [HttpPost("{id}/print")]
+    public async Task<IActionResult> print(Guid id)
+    {
+        var invoice = await service.print(id);
+
+        if (invoice == null)
+            return NotFound();
+
+        return Ok(invoice);
+    }
 }

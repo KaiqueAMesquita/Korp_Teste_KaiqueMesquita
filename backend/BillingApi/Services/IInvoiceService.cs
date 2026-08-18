@@ -11,4 +11,6 @@ public interface IInvoiceService
     Task<InvoiceDto> create(CreateInvoiceDto dto);
 
     Task<InvoiceDto?> update(Guid id, UpdateInvoiceDto dto);
+
+    Task<InvoiceDto?> print(Guid id);
 }
