@@ -21,10 +21,10 @@ public class InvoiceService : IInvoiceService
     public async Task<InvoiceDto> create(CreateInvoiceDto dto)
     {
         if (dto.Items == null || dto.Items.Count == 0)
-            throw new Exception("A nota deve possuir pelo menos um produto.");
+            throw new ArgumentException("A nota deve possuir pelo menos um produto.");
 
         if (dto.Items.Any(item => item.Quantity <= 0))
-            throw new Exception("A quantidade deve ser maior que zero.");
+            throw new ArgumentException("A quantidade deve ser maior que zero.");
 
         var invoice = new Invoice
         {
@@ -40,7 +40,7 @@ public class InvoiceService : IInvoiceService
             var product = await stockClient.getProductById(itemDto.ProductId);
 
             if (product == null)
-                throw new Exception(
+                throw new KeyNotFoundException(
                     $"Produto {itemDto.ProductId} não encontrado."
                 );
 
@@ -75,7 +75,7 @@ public class InvoiceService : IInvoiceService
 
         if (invoice == null)
         {
-            return null;
+            throw new KeyNotFoundException("Nota não encontrada.");
         }
 
         return MapToDto(invoice);
@@ -89,7 +89,7 @@ public class InvoiceService : IInvoiceService
 
         if (invoice == null)
         {
-            return null;
+            throw new KeyNotFoundException("Nota não encontrada.");
         }
 
         invoice.Status = dto.Status;
@@ -125,10 +125,10 @@ public async Task<InvoiceDto?> print(Guid id)
     var invoice = await repository.getById(id);
 
     if (invoice == null)
-        return null;
+        throw new KeyNotFoundException("Nota não encontrada.");
 
     if (invoice.Status != Enums.InvoiceStatus.Opened)
-        throw new Exception("A nota já está fechada.");
+        throw new InvalidOperationException("A nota já está fechada.");
 
     var debitDto = new DebitStockRequestDto
     {

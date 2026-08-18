@@ -1,37 +1,44 @@
 using BillingApi.DTOs;
 using BillingApi.Entities;
 using BillingApi.Repositories;
+using BillingApi.Clients;
 
 namespace BillingApi.Services;
 
 public class InvoiceItemService : IInvoiceItemService
 {
     private readonly IInvoiceItemRepository repository;
+    private readonly IStockClient stockClient;
 
-    public InvoiceItemService(IInvoiceItemRepository _repository)
+    public InvoiceItemService(
+        IInvoiceItemRepository _repository,
+        IStockClient _stockClient)
     {
         repository = _repository;
+        stockClient = _stockClient;
     }
 
     public async Task<InvoiceItemDto> create(CreateInvoiceItemDto dto)
     {
-        /*
+        var product = await stockClient.getProductById(dto.ProductId);
+
+        if (product == null)
+            throw new KeyNotFoundException(
+                $"Produto {dto.ProductId} não encontrado."
+            );
+
         var invoiceItem = new InvoiceItem
         {
-            
-            ProductId = dto.ProductId,
-            ProductCode = dto.ProductCode,
-            ProductDescription = dto.ProductDescription,
+            Id = Guid.NewGuid(),
+            ProductId = product.Id,
+            ProductCode = product.Code,
+            ProductDescription = product.Description,
             Quantity = dto.Quantity
-            
         };
-
 
         var createdItem = await repository.create(invoiceItem);
 
         return MapToDto(createdItem);
-        */
-        return null;
     }
 
     public async Task<List<InvoiceItemDto>> getAll()
@@ -47,7 +54,7 @@ public class InvoiceItemService : IInvoiceItemService
 
         if (item == null)
         {
-            return null;
+            throw new KeyNotFoundException("Item da nota não encontrado.");
         }
 
         return MapToDto(item);
@@ -59,14 +66,21 @@ public class InvoiceItemService : IInvoiceItemService
 
         if (item == null)
         {
-            return null;
+            throw new KeyNotFoundException("Item da nota não encontrado.");
         }
-/*
-        item.ProductId = dto.ProductId;
-        item.ProductCode = dto.ProductCode;
-        item.ProductDescription = dto.ProductDescription;
+
+        var product = await stockClient.getProductById(dto.ProductId);
+
+        if (product == null)
+            throw new KeyNotFoundException(
+                $"Produto {dto.ProductId} não encontrado."
+            );
+
+        item.ProductId = product.Id;
+        item.ProductCode = product.Code;
+        item.ProductDescription = product.Description;
         item.Quantity = dto.Quantity;
-*/
+
         await repository.saveChanges();
 
         return MapToDto(item);

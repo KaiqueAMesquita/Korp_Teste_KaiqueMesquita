@@ -16,7 +16,7 @@ public class StockService: IStockService{
     public async Task debit(DebitStockRequestDto dto)
 {
     if (dto.Items == null || dto.Items.Count == 0)
-        throw new Exception("Nenhum item foi informado.");
+        throw new ArgumentException("Nenhum produto foi informado.");
 
     await using var transaction =
         await context.Database.BeginTransactionAsync();
@@ -36,16 +36,16 @@ public class StockService: IStockService{
         foreach (var item in items)
         {
             if (item.Quantity <= 0)
-                throw new Exception("A quantidade deve ser maior que zero.");
+                throw new ArgumentException("A quantidade deve ser maior que zero.");
 
             var product = await repository.getById(item.ProductId);
 
             if (product == null)
-                throw new Exception("Produto não encontrado.");
+                throw new KeyNotFoundException($"Produto {item.ProductId} não encontrado.");
 
             if (product.Balance < item.Quantity)
             {
-                throw new Exception(
+                throw new InvalidOperationException(
                     $"Saldo insuficiente para o produto {product.Description}."
                 );
             }

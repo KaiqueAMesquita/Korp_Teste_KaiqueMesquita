@@ -2,6 +2,7 @@ using BillingApi.Clients;
 using BillingApi.Data;
 using BillingApi.Repositories;
 using BillingApi.Services;
+using BillingApi.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +45,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 
 app.Run();

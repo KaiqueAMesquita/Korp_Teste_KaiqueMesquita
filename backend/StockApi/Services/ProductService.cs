@@ -51,7 +51,7 @@ public class ProductService: IProductService
 
         if(product == null)
         {
-            return null;
+            throw new KeyNotFoundException("Produto não encontrado.");
 
         }
 
@@ -64,7 +64,7 @@ public class ProductService: IProductService
 
         if(product == null)
         {
-            return null;
+            throw new KeyNotFoundException("Produto não encontrado.");
         } 
         product.Code =  dto.Code;
         product.Description = dto.Description;
