@@ -1,3 +1,4 @@
+using BillingApi.Clients;
 using BillingApi.Data;
 using BillingApi.Repositories;
 using BillingApi.Services;
@@ -19,7 +20,7 @@ builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 builder.Services.AddScoped<IInvoiceItemRepository, InvoiceItemRepository>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IInvoiceItemService, InvoiceItemService>();
-
+builder.Services.AddScoped<IStockClient, StockClient>();
 builder.Services.AddHttpClient("StockApi", client =>
 {
     client.BaseAddress = new Uri(
