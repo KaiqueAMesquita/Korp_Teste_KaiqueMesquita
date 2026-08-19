@@ -1,0 +1,75 @@
+<form>
+
+  <div class="mb-3">
+
+    <label class="form-label">
+      Código
+    </label>
+
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Ex: 12345">
+
+  </div>
+
+
+  <div class="mb-3">
+
+    <label class="form-label">
+      Descrição
+    </label>
+
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Descrição do produto">
+
+  </div>
+
+
+  <div class="mb-3">
+
+    <label class="form-label">
+      Saldo
+    </label>
+
+    <input
+      type="number"
+      class="form-control"
+      min="0"
+      placeholder="0">
+
+  </div>
+
+
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="btn btn-light"
+      (click)="cancel()">
+
+      Cancelar
+
+    </button>
+
+
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="save()">
+
+      <i class="fa-solid fa-floppy-disk me-2"></i>
+
+      @if (product) {
+        Salvar Alterações
+      } @else {
+        Salvar Produto
+      }
+
+    </button>
+
+  </div>
+
+</form>

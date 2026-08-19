@@ -1,0 +1,138 @@
+<div class="page-header">
+
+  <div>
+
+    <a
+      routerLink="/invoices"
+      class="back-link">
+
+      <i class="fa-solid fa-arrow-left me-2"></i>
+      Voltar
+
+    </a>
+
+    <h1>Nova Nota Fiscal</h1>
+
+    <p>
+      Adicione os produtos e suas respectivas quantidades.
+    </p>
+
+  </div>
+
+</div>
+
+
+<div class="content-card">
+
+  <div class="card-header-custom">
+
+    <div>
+
+      <i class="fa-solid fa-boxes-stacked me-2"></i>
+
+      Produtos da nota
+
+    </div>
+
+  </div>
+
+
+  <div class="card-body-custom">
+
+    <div class="invoice-item">
+
+      <div>
+
+        <label class="form-label">
+          Produto
+        </label>
+
+        <select class="form-select">
+
+          <option
+            selected
+            disabled>
+
+            Selecione um produto
+
+          </option>
+
+          <option>
+            Produto A — saldo: 8
+          </option>
+
+          <option>
+            Produto B — saldo: 2
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label class="form-label">
+          Quantidade
+        </label>
+
+        <input
+          type="number"
+          min="1"
+          value="1"
+          class="form-control">
+
+      </div>
+
+
+      <div class="remove-field">
+
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          title="Remover">
+
+          <i class="fa-solid fa-trash"></i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="btn btn-outline-danger mt-3">
+
+      <i class="fa-solid fa-plus me-2"></i>
+      Adicionar Produto
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<div class="form-actions">
+
+  <a
+    routerLink="/invoices"
+    class="btn btn-light">
+
+    Cancelar
+
+  </a>
+
+
+  <button
+    type="button"
+    class="btn btn-danger">
+
+    <i class="fa-solid fa-floppy-disk me-2"></i>
+    Criar Nota
+
+  </button>
+
+</div>

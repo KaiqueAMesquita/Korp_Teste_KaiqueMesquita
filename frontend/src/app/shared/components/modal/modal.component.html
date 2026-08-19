@@ -1,0 +1,63 @@
+@if (modalService.modal(); as modal) {
+
+  <div
+    class="modal-backdrop fade show"
+    (click)="modalService.close()">
+  </div>
+
+  <div
+    class="modal fade show d-block"
+    tabindex="-1"
+    role="dialog"
+    aria-modal="true"
+    (click)="modalService.close()">
+
+    <div
+      class="modal-dialog modal-dialog-centered"
+      role="document"
+      (click)="$event.stopPropagation()">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+
+          <h5 class="modal-title">
+            {{ modal.title }}
+          </h5>
+
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Fechar"
+            (click)="modalService.close()">
+          </button>
+
+        </div>
+
+        <div class="modal-body">
+
+          <p class="mb-0">
+            {{ modal.message }}
+          </p>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="modalService.close()">
+
+            OK
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+}

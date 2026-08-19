@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+body {
+  margin: 0;
+
+  background: #f5f6f8;
+
+  color: #292929;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+.btn-danger {
+  background: #c62828;
+  border-color: #c62828;
+
+  &:hover {
+    background: #ad2020;
+    border-color: #ad2020;
+  }
+}

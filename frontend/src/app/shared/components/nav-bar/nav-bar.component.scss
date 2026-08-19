@@ -1,0 +1,26 @@
+.korp-navbar {
+  background: #c62828;
+  min-height: 64px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.navbar-brand {
+  font-size: 1.3rem;
+  letter-spacing: 0.3px;
+}
+
+.nav-link {
+  border-radius: 6px;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+  transition: background 0.15s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.18);
+  font-weight: 600;
+}
