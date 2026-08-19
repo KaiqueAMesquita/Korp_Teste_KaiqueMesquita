@@ -1,4 +1,6 @@
-<form>
+<form
+  [formGroup]="form"
+  (ngSubmit)="submit()">
 
   <div class="mb-3">
 
@@ -9,7 +11,16 @@
     <input
       type="text"
       class="form-control"
-      placeholder="Ex: 12345">
+      formControlName="code"
+      placeholder="Ex: 12345"
+      [class.is-invalid]="
+        form.controls.code.invalid &&
+        form.controls.code.touched
+      ">
+
+    <div class="invalid-feedback">
+      Informe o código.
+    </div>
 
   </div>
 
@@ -23,7 +34,16 @@
     <input
       type="text"
       class="form-control"
-      placeholder="Descrição do produto">
+      formControlName="description"
+      placeholder="Descrição do produto"
+      [class.is-invalid]="
+        form.controls.description.invalid &&
+        form.controls.description.touched
+      ">
+
+    <div class="invalid-feedback">
+      Informe a descrição.
+    </div>
 
   </div>
 
@@ -36,9 +56,17 @@
 
     <input
       type="number"
-      class="form-control"
       min="0"
-      placeholder="0">
+      class="form-control"
+      formControlName="balance"
+      [class.is-invalid]="
+        form.controls.balance.invalid &&
+        form.controls.balance.touched
+      ">
+
+    <div class="invalid-feedback">
+      O saldo não pode ser negativo.
+    </div>
 
   </div>
 
@@ -48,6 +76,7 @@
     <button
       type="button"
       class="btn btn-light"
+      [disabled]="saving"
       (click)="cancel()">
 
       Cancelar
@@ -56,16 +85,28 @@
 
 
     <button
-      type="button"
+      type="submit"
       class="btn btn-danger"
-      (click)="save()">
+      [disabled]="saving">
 
-      <i class="fa-solid fa-floppy-disk me-2"></i>
+      @if (saving) {
 
-      @if (product) {
-        Salvar Alterações
+        <span
+          class="spinner-border spinner-border-sm me-2">
+        </span>
+
+        Salvando...
+
       } @else {
-        Salvar Produto
+
+        <i class="fa-solid fa-floppy-disk me-2"></i>
+
+        {{
+          product
+            ? 'Salvar Alterações'
+            : 'Salvar Produto'
+        }}
+
       }
 
     </button>

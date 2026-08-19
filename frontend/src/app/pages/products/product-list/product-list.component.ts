@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
-import { ProductFormComponent } from '../product-form/product-form.component';
+import {
+  Component,
+  inject,
+  OnInit
+} from '@angular/core';
 
-interface Product {
-  id: string;
-  code: string;
-  description: string;
-  balance: number;
-}
+import { finalize } from 'rxjs';
+
+import { Product } from '../../../shared/models/product';
+import { ProductService } from '../../../core/services/product.service';
+
+import {
+  ProductFormComponent
+} from '../product-form/product-form.component';
 
 @Component({
   selector: 'app-product-list',
@@ -17,52 +22,84 @@ interface Product {
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
+
+  private productService =
+    inject(ProductService);
+
+  products: Product[] = [];
+
+  loading = false;
 
   showProductModal = false;
 
   selectedProduct: Product | null = null;
 
-  products: Product[] = [
-    {
-      id: '1',
-      code: '34567',
-      description: 'Produto A',
-      balance: 8
-    },
-    {
-      id: '2',
-      code: '223232',
-      description: 'Produto B',
-      balance: 2
-    },
-    {
-      id: '3',
-      code: '99881',
-      description: 'Produto C',
-      balance: 15
-    }
-  ];
+  ngOnInit(): void {
 
-  openCreateModal(): void {
-    this.selectedProduct = null;
-    this.showProductModal = true;
+    this.loadProducts();
+
   }
 
-  openEditModal(product: Product): void {
-    this.selectedProduct = product;
+  loadProducts(): void {
+
+    this.loading = true;
+
+    this.productService
+      .getAll()
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe({
+
+        next: products => {
+
+          this.products = products;
+
+        },
+
+        error: () => {
+          // interceptor
+        }
+
+      });
+
+  }
+
+  openCreateModal(): void {
+
+    this.selectedProduct = null;
+
     this.showProductModal = true;
+
+  }
+
+  openEditModal(
+    product: Product
+  ): void {
+
+    this.selectedProduct = product;
+
+    this.showProductModal = true;
+
   }
 
   closeModal(): void {
+
     this.showProductModal = false;
+
     this.selectedProduct = null;
+
   }
 
   onProductSaved(): void {
+
     this.closeModal();
 
-    // depois:
-    // this.loadProducts();
+    this.loadProducts();
+
   }
+
 }

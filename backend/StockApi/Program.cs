@@ -21,9 +21,21 @@ builder.Services.AddDbContext<StockDbContext>(options =>
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IStockService, StockService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Angular", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -35,6 +47,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("Angular");
 
 app.UseAuthorization();
 

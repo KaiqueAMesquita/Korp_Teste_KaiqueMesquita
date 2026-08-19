@@ -1,55 +1,98 @@
-<div class="page-header">
+@if (loading) {
 
-  <div>
+  <div class="text-center py-5">
 
-    <a
-      routerLink="/invoices"
-      class="back-link">
-
-      <i class="fa-solid fa-arrow-left me-2"></i>
-      Voltar
-
-    </a>
-
-
-    <div class="title-row">
-
-      <h1>
-        Nota Fiscal
-        #{{ invoice.number.toString().padStart(6, '0') }}
-      </h1>
-
-
-      @if (invoice.status === 'Opened') {
-
-        <span class="status status-open">
-          Aberta
-        </span>
-
-      } @else {
-
-        <span class="status status-closed">
-          Fechada
-        </span>
-
-      }
-
+    <div
+      class="spinner-border text-danger">
     </div>
 
-
-    <p>
-      Criada em {{ invoice.createdAt }}
+    <p class="mt-2 text-secondary">
+      Carregando nota...
     </p>
 
   </div>
 
+} @else if (invoice) {
 
-  @if (invoice.status === 'Opened') {
+
+  <div class="page-header">
+
+    <div>
+
+      <a
+        routerLink="/invoices"
+        class="back-link">
+
+        <i class="fa-solid fa-arrow-left me-2"></i>
+
+        Voltar
+
+      </a>
+
+
+      <div class="title-row">
+
+        <h1>
+
+          Nota Fiscal
+
+          #{{
+            invoice.number
+              .toString()
+              .padStart(6, '0')
+          }}
+
+        </h1>
+
+
+        @if (
+          invoice.status ===
+          InvoiceStatus.Opened
+        ) {
+
+          <span
+            class="status status-open">
+
+            Aberta
+
+          </span>
+
+        } @else {
+
+          <span
+            class="status status-closed">
+
+            Fechada
+
+          </span>
+
+        }
+
+      </div>
+
+
+      <p>
+
+        Criada em
+
+        {{
+          invoice.createdAt
+            | date:'dd/MM/yyyy HH:mm'
+        }}
+
+      </p>
+
+    </div>
+
 
     <button
       type="button"
       class="btn btn-danger print-button"
-      [disabled]="printing"
+      [disabled]="
+        printing ||
+        invoice.status !==
+          InvoiceStatus.Opened
+      "
       (click)="print()">
 
       @if (printing) {
@@ -63,111 +106,135 @@
       } @else {
 
         <i class="fa-solid fa-print me-2"></i>
+
         Imprimir
 
       }
 
     </button>
 
-  }
-
-</div>
+  </div>
 
 
-<div class="invoice-summary">
+  <div class="invoice-summary">
 
-  <div class="summary-item">
+    <div class="summary-item">
 
-    <span>
-      Número
-    </span>
+      <span>Número</span>
 
-    <strong>
-      #{{ invoice.number.toString().padStart(6, '0') }}
-    </strong>
+      <strong>
+
+        #{{
+          invoice.number
+            .toString()
+            .padStart(6, '0')
+        }}
+
+      </strong>
+
+    </div>
+
+
+    <div class="summary-item">
+
+      <span>Status</span>
+
+      <strong>
+
+        {{
+          invoice.status ===
+          InvoiceStatus.Opened
+            ? 'Aberta'
+            : 'Fechada'
+        }}
+
+      </strong>
+
+    </div>
+
+
+    <div class="summary-item">
+
+      <span>Produtos</span>
+
+      <strong>
+        {{ invoice.items.length }}
+      </strong>
+
+    </div>
 
   </div>
 
 
-  <div class="summary-item">
+  <div class="content-card">
 
-    <span>
-      Status
-    </span>
+    <div class="card-header-custom">
 
-    <strong>
-      {{ invoice.status === 'Opened' ? 'Aberta' : 'Fechada' }}
-    </strong>
+      <i class="fa-solid fa-box me-2"></i>
 
-  </div>
+      Produtos
+
+    </div>
 
 
-  <div class="summary-item">
+    <div class="table-responsive">
 
-    <span>
-      Total de produtos
-    </span>
+      <table class="table align-middle mb-0">
 
-    <strong>
-      {{ invoice.items.length }}
-    </strong>
-
-  </div>
-
-</div>
-
-
-<div class="content-card">
-
-  <div class="card-header-custom">
-
-    <i class="fa-solid fa-box me-2"></i>
-
-    Produtos
-
-  </div>
-
-
-  <div class="table-responsive">
-
-    <table class="table align-middle mb-0">
-
-      <thead>
-
-        <tr>
-          <th>Código</th>
-          <th>Produto</th>
-          <th>Quantidade</th>
-        </tr>
-
-      </thead>
-
-      <tbody>
-
-        @for (item of invoice.items; track item.productCode) {
+        <thead>
 
           <tr>
 
-            <td class="product-code">
-              {{ item.productCode }}
-            </td>
+            <th>Código</th>
 
-            <td>
-              {{ item.productDescription }}
-            </td>
+            <th>Produto</th>
 
-            <td>
-              {{ item.quantity }}
-            </td>
+            <th>Quantidade</th>
 
           </tr>
 
-        }
+        </thead>
 
-      </tbody>
 
-    </table>
+        <tbody>
+
+          @for (
+            item of invoice.items;
+            track item.id
+          ) {
+
+            <tr>
+
+              <td class="product-code">
+
+                {{ item.productCode }}
+
+              </td>
+
+
+              <td>
+
+                {{ item.productDescription }}
+
+              </td>
+
+
+              <td>
+
+                {{ item.quantity }}
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
 
   </div>
 
-</div>
+}

@@ -22,6 +22,18 @@ builder.Services.AddScoped<IInvoiceItemRepository, InvoiceItemRepository>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IInvoiceItemService, InvoiceItemService>();
 builder.Services.AddScoped<IStockClient, StockClient>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Angular", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddHttpClient("StockApi", client =>
 {
     client.BaseAddress = new Uri(
@@ -42,6 +54,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("Angular");
 
 app.UseAuthorization();
 

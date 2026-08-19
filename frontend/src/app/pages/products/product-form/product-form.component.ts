@@ -1,25 +1,40 @@
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
-  Output
+  OnChanges,
+  Output,
+  SimpleChanges
 } from '@angular/core';
 
-interface Product {
-  id: string;
-  code: string;
-  description: string;
-  balance: number;
-}
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+
+import { finalize } from 'rxjs';
+
+import { Product } from '../../../shared/models/product';
+import { CreateProduct } from '../../../shared/models/create-product';
+import { ProductService } from '../../../core/services/product.service';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [],
+  imports: [
+    ReactiveFormsModule
+  ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements OnChanges {
+
+  private fb = inject(FormBuilder);
+
+  private productService =
+    inject(ProductService);
 
   @Input()
   product: Product | null = null;
@@ -30,14 +45,96 @@ export class ProductFormComponent {
   @Output()
   cancelled = new EventEmitter<void>();
 
-  save(): void {
+  saving = false;
 
-    // depois entra:
-    // ReactiveForms
-    // ProductService
-    // create/update
+  form = this.fb.nonNullable.group({
 
-    this.saved.emit();
+    code: [
+      '',
+      Validators.required
+    ],
+
+    description: [
+      '',
+      Validators.required
+    ],
+
+    balance: [
+      0,
+      [
+        Validators.required,
+        Validators.min(0)
+      ]
+    ]
+
+  });
+
+  ngOnChanges(
+    changes: SimpleChanges
+  ): void {
+
+    if (!changes['product']) {
+      return;
+    }
+
+    if (this.product) {
+
+      this.form.reset({
+        code: this.product.code,
+        description: this.product.description,
+        balance: this.product.balance
+      });
+
+    } else {
+
+      this.form.reset({
+        code: '',
+        description: '',
+        balance: 0
+      });
+
+    }
+  }
+
+  submit(): void {
+
+    if (this.form.invalid) {
+
+      this.form.markAllAsTouched();
+
+      return;
+    }
+
+    const dto: CreateProduct =
+      this.form.getRawValue();
+
+    this.saving = true;
+
+    const request$ =
+      this.product
+        ? this.productService.update(
+            this.product.id,
+            dto
+          )
+        : this.productService.create(dto);
+
+    request$
+      .pipe(
+        finalize(() => {
+          this.saving = false;
+        })
+      )
+      .subscribe({
+
+        next: () => {
+          this.saved.emit();
+        },
+
+        error: () => {
+          // interceptor trata
+        }
+
+      });
   }
 
   cancel(): void {

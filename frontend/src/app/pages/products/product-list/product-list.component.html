@@ -1,9 +1,15 @@
 <div class="page-header">
 
   <div>
+
     <h1>Produtos</h1>
-    <p>Gerencie os produtos disponíveis em estoque.</p>
+
+    <p>
+      Gerencie os produtos disponíveis em estoque.
+    </p>
+
   </div>
+
 
   <button
     type="button"
@@ -11,6 +17,7 @@
     (click)="openCreateModal()">
 
     <i class="fa-solid fa-plus me-2"></i>
+
     Novo Produto
 
   </button>
@@ -20,71 +27,124 @@
 
 <div class="content-card">
 
-  <div class="table-responsive">
+  @if (loading) {
 
-    <table class="table align-middle mb-0">
+    <div class="text-center py-5">
 
-      <thead>
+      <div
+        class="spinner-border text-danger">
+      </div>
 
-        <tr>
-          <th>Código</th>
-          <th>Descrição</th>
-          <th>Saldo</th>
-          <th class="text-end">Ações</th>
-        </tr>
+      <p class="text-secondary mt-2 mb-0">
+        Carregando produtos...
+      </p>
 
-      </thead>
+    </div>
 
-      <tbody>
+  } @else {
 
-        @for (product of products; track product.id) {
+    <div class="table-responsive">
+
+      <table class="table align-middle mb-0">
+
+        <thead>
 
           <tr>
 
-            <td>
-              <span class="product-code">
-                {{ product.code }}
-              </span>
-            </td>
+            <th>Código</th>
 
-            <td>
-              {{ product.description }}
-            </td>
+            <th>Descrição</th>
 
-            <td>
+            <th>Saldo</th>
 
-              <span class="stock-badge">
-
-                {{ product.balance }}
-                {{ product.balance === 1 ? 'unidade' : 'unidades' }}
-
-              </span>
-
-            </td>
-
-            <td class="text-end">
-
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-secondary"
-                title="Editar produto"
-                (click)="openEditModal(product)">
-
-                <i class="fa-solid fa-pen"></i>
-
-              </button>
-
-            </td>
+            <th class="text-end">
+              Ações
+            </th>
 
           </tr>
 
-        }
+        </thead>
 
-      </tbody>
 
-    </table>
+        <tbody>
 
-  </div>
+          @for (
+            product of products;
+            track product.id
+          ) {
+
+            <tr>
+
+              <td>
+
+                <span class="product-code">
+                  {{ product.code }}
+                </span>
+
+              </td>
+
+
+              <td>
+                {{ product.description }}
+              </td>
+
+
+              <td>
+
+                <span class="stock-badge">
+
+                  {{ product.balance }}
+
+                  {{
+                    product.balance === 1
+                      ? 'unidade'
+                      : 'unidades'
+                  }}
+
+                </span>
+
+              </td>
+
+
+              <td class="text-end">
+
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  title="Editar"
+                  (click)="openEditModal(product)">
+
+                  <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          } @empty {
+
+            <tr>
+
+              <td
+                colspan="4"
+                class="text-center py-5 text-secondary">
+
+                Nenhum produto cadastrado.
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
 
 </div>
 
@@ -96,11 +156,12 @@
     (click)="closeModal()">
   </div>
 
+
   <div
     class="modal fade show d-block"
     tabindex="-1"
-    role="dialog"
     aria-modal="true"
+    role="dialog"
     (click)="closeModal()">
 
     <div
@@ -113,13 +174,14 @@
 
           <h5 class="modal-title">
 
-            @if (selectedProduct) {
-              Editar Produto
-            } @else {
-              Novo Produto
-            }
+            {{
+              selectedProduct
+                ? 'Editar Produto'
+                : 'Novo Produto'
+            }}
 
           </h5>
+
 
           <button
             type="button"
@@ -128,6 +190,7 @@
           </button>
 
         </div>
+
 
         <div class="modal-body">
 

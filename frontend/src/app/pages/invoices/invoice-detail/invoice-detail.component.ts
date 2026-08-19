@@ -1,47 +1,95 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
+
+import { Invoice } from '../../../shared/models/invoice';
+import { InvoiceStatus } from '../../../shared/enums/invoice-status';
+
+import { InvoiceService } from '../../../core/services/invoice.service';
+import { ModalService } from '../../../core/services/modal.service';
 
 @Component({
   selector: 'app-invoice-detail',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    DatePipe
   ],
   templateUrl: './invoice-detail.component.html',
   styleUrl: './invoice-detail.component.scss'
 })
-export class InvoiceDetailComponent {
+export class InvoiceDetailComponent implements OnInit {
 
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private invoiceService = inject(InvoiceService);
+  private modalService = inject(ModalService);
+
+  invoice: Invoice | null = null;
+
+  loading = false;
   printing = false;
 
-  invoice = {
-    id: '1',
-    number: 1,
-    createdAt: '18/08/2026 20:30',
-    status: 'Opened',
-    items: [
-      {
-        productCode: '34567',
-        productDescription: 'Produto A',
-        quantity: 2
-      },
-      {
-        productCode: '223232',
-        productDescription: 'Produto B',
-        quantity: 2
-      }
-    ]
-  };
+  InvoiceStatus = InvoiceStatus;
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+
+    if (!id) {
+      return;
+    }
+
+    this.loadInvoice(id);
+  }
+
+  loadInvoice(id: string): void {
+    this.loading = true;
+
+    this.invoiceService
+      .getById(id)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe({
+        next: invoice => {
+          this.invoice = invoice;
+        },
+        error: () => {}
+      });
+  }
 
   print(): void {
+    if (!this.invoice) {
+      return;
+    }
+
+    if (this.invoice.status !== InvoiceStatus.Opened) {
+      return;
+    }
 
     this.printing = true;
 
-    // depois:
-    // invoiceService.print()
+    this.invoiceService
+      .print(this.invoice.id)
+      .pipe(
+        finalize(() => {
+          this.printing = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.modalService.open(
+            'Impressão concluída',
+            'A nota fiscal foi impressa e finalizada com sucesso.'
+          );
 
-    setTimeout(() => {
-      this.printing = false;
-    }, 1500);
+          this.router.navigate(['/invoices']);
+        },
+        error: () => {}
+      });
   }
+
 }
