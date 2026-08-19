@@ -1,0 +1,116 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="submit()">
+
+  <div class="mb-3">
+
+    <label class="form-label">
+      Código
+    </label>
+
+    <input
+      type="text"
+      class="form-control"
+      formControlName="code"
+      placeholder="Ex: 12345"
+      [class.is-invalid]="
+        form.controls.code.invalid &&
+        form.controls.code.touched
+      ">
+
+    <div class="invalid-feedback">
+      Informe o código.
+    </div>
+
+  </div>
+
+
+  <div class="mb-3">
+
+    <label class="form-label">
+      Descrição
+    </label>
+
+    <input
+      type="text"
+      class="form-control"
+      formControlName="description"
+      placeholder="Descrição do produto"
+      [class.is-invalid]="
+        form.controls.description.invalid &&
+        form.controls.description.touched
+      ">
+
+    <div class="invalid-feedback">
+      Informe a descrição.
+    </div>
+
+  </div>
+
+
+  <div class="mb-3">
+
+    <label class="form-label">
+      Saldo
+    </label>
+
+    <input
+      type="number"
+      min="0"
+      class="form-control"
+      formControlName="balance"
+      [class.is-invalid]="
+        form.controls.balance.invalid &&
+        form.controls.balance.touched
+      ">
+
+    <div class="invalid-feedback">
+      O saldo não pode ser negativo.
+    </div>
+
+  </div>
+
+
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="btn btn-light"
+      [disabled]="saving"
+      (click)="cancel()">
+
+      Cancelar
+
+    </button>
+
+
+    <button
+      type="submit"
+      class="btn btn-danger"
+      [disabled]="saving">
+
+      @if (saving) {
+
+        <span
+          class="spinner-border spinner-border-sm me-2">
+        </span>
+
+        Salvando...
+
+      } @else {
+
+        <i class="fa-solid fa-floppy-disk me-2"></i>
+
+        {{
+          product
+            ? 'Salvar Alterações'
+            : 'Salvar Produto'
+        }}
+
+      }
+
+    </button>
+
+  </div>
+
+</form>

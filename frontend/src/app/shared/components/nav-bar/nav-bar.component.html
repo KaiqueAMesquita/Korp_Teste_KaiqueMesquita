@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg navbar-dark korp-navbar">
+  <div class="container">
+
+    <a class="navbar-brand fw-bold" routerLink="/products">
+      <i class="fa-solid fa-file-invoice me-2"></i>
+      Korp
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+
+      <ul class="navbar-nav ms-auto gap-lg-2">
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/products"
+            routerLinkActive="active">
+
+            <i class="fa-solid fa-box me-1"></i>
+            Produtos
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/invoices"
+            routerLinkActive="active">
+
+            <i class="fa-solid fa-file-invoice-dollar me-1"></i>
+            Notas Fiscais
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+
+  </div>
+</nav>

@@ -1,0 +1,251 @@
+<div class="page-header">
+
+  <div>
+
+    <a
+      routerLink="/invoices"
+      class="back-link">
+
+      <i class="fa-solid fa-arrow-left me-2"></i>
+
+      Voltar
+
+    </a>
+
+
+    <h1>
+      Nova Nota Fiscal
+    </h1>
+
+
+    <p>
+      Adicione os produtos e as quantidades.
+    </p>
+
+  </div>
+
+</div>
+
+
+<form
+  [formGroup]="form"
+  (ngSubmit)="submit()">
+
+
+  <div class="content-card">
+
+    <div class="card-header-custom">
+
+      <i
+        class="fa-solid fa-boxes-stacked me-2">
+      </i>
+
+      Produtos da nota
+
+    </div>
+
+
+    <div class="card-body-custom">
+
+      @if (loadingProducts) {
+
+        <div class="text-center py-4">
+
+          <div
+            class="spinner-border text-danger">
+          </div>
+
+          <p class="mt-2 text-secondary">
+            Carregando produtos...
+          </p>
+
+        </div>
+
+      } @else if (
+        products.length === 0
+      ) {
+
+        <div
+          class="alert alert-warning mb-0">
+
+          Não existem produtos cadastrados.
+
+        </div>
+
+      } @else {
+
+        <div formArrayName="items">
+
+          @for (
+            item of items.controls;
+            track $index;
+            let i = $index
+          ) {
+
+            <div
+              class="invoice-item mb-3"
+              [formGroupName]="i">
+
+
+              <div>
+
+                <label class="form-label">
+                  Produto
+                </label>
+
+
+                <select
+                  class="form-select"
+                  formControlName="productId"
+                  [class.is-invalid]="
+                    item.get('productId')?.invalid &&
+                    item.get('productId')?.touched
+                  ">
+
+                  <option
+                    value=""
+                    disabled>
+
+                    Selecione um produto
+
+                  </option>
+
+
+                  @for (
+                    product of products;
+                    track product.id
+                  ) {
+
+                    <option
+                      [value]="product.id">
+
+                      {{ product.code }}
+                      -
+                      {{ product.description }}
+                      -
+                      Saldo: {{ product.balance }}
+
+                    </option>
+
+                  }
+
+                </select>
+
+
+                <div class="invalid-feedback">
+
+                  Selecione o produto.
+
+                </div>
+
+              </div>
+
+
+              <div>
+
+                <label class="form-label">
+                  Quantidade
+                </label>
+
+
+                <input
+                  type="number"
+                  min="1"
+                  class="form-control"
+                  formControlName="quantity"
+                  [class.is-invalid]="
+                    item.get('quantity')?.invalid &&
+                    item.get('quantity')?.touched
+                  ">
+
+
+                <div class="invalid-feedback">
+
+                  Quantidade deve ser maior que zero.
+
+                </div>
+
+              </div>
+
+
+              <div class="remove-field">
+
+                <button
+                  type="button"
+                  class="btn btn-outline-danger"
+                  [disabled]="items.length === 1"
+                  (click)="removeItem(i)">
+
+                  <i class="fa-solid fa-trash"></i>
+
+                </button>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          (click)="addItem()">
+
+          <i class="fa-solid fa-plus me-2"></i>
+
+          Adicionar Produto
+
+        </button>
+
+      }
+
+    </div>
+
+  </div>
+
+
+  <div class="form-actions">
+
+    <a
+      routerLink="/invoices"
+      class="btn btn-light">
+
+      Cancelar
+
+    </a>
+
+
+    <button
+      type="submit"
+      class="btn btn-danger"
+      [disabled]="
+        saving ||
+        products.length === 0
+      ">
+
+      @if (saving) {
+
+        <span
+          class="spinner-border spinner-border-sm me-2">
+        </span>
+
+        Criando...
+
+      } @else {
+
+        <i
+          class="fa-solid fa-floppy-disk me-2">
+        </i>
+
+        Criar Nota
+
+      }
+
+    </button>
+
+  </div>
+
+</form>
